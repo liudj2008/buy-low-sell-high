@@ -1,0 +1,19 @@
+.subscription-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  max-width: 400px;
+
+  form {
+    width: 60%;
+  }
+
+  button {
+    width: 35%;
+    margin-top: 5%;
+    margin-bottom: 10%;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
