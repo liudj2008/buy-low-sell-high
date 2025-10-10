@@ -15,7 +15,7 @@ import { InvestingService } from '../service/investing.service';
 
 @Component({
   selector: 'app-subscription',
-  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, FormsModule],
   templateUrl: './subscription.html',
   styleUrl: './subscription.scss'
 })
@@ -23,12 +23,14 @@ import { InvestingService } from '../service/investing.service';
 export class SubscriptionComponent {
   constructor(private _investingService: InvestingService) {}
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+  symbol: string = '';
 
   matcher = new MyErrorStateMatcher();
 
-  subscribe(email: string) {
+  subscribe(email: string, symbol: string) {
     // Add your subscription logic here
-    this._investingService.subscribe(email).subscribe({
+    console.log('Subscribing with email:', email, 'and symbol:', symbol);
+    this._investingService.subscribe(email, symbol).subscribe({
       next: (response) => {
         console.log('Subscription successful:', response);
       },

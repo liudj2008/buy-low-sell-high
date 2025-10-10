@@ -17,4 +17,5 @@ export interface stockInput {
 
 export interface subscribeInput {
     email: string;
+    symbol: string;
 }

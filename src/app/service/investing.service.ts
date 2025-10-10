@@ -10,8 +10,8 @@ import { buyInput, sellInput, subscribeInput } from '../models';
 export class InvestingService {
   constructor(private _http: HttpClient) { }
 
-  subscribe(email: string) {
-    const body: subscribeInput = { email: email };
+  subscribe(email: string, symbol: string) {
+    const body: subscribeInput = { email: email, symbol: symbol };
     return this._http.post(`${API_BASE_URL}${SUBDOMAIN.SUBSCRIBE}`, body);
   }
 
