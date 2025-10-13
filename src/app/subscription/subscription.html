@@ -12,11 +12,15 @@
             }
         </mat-form-field>
 
-        <mat-form-field>
-            <mat-label>Symbol</mat-label>
-            <input type="text" matInput placeholder="Ex. NVDA" [(ngModel)]="symbol" name="symbol">
-        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Stock Symbol</mat-label>
+            <mat-select [(ngModel)]="selectedSymbol" [name]="'symbol'">
+                @for (symbol of stockSymbols; track symbol) {
+                    <mat-option [value]="symbol">{{ symbol }}</mat-option>
+                }
+                </mat-select>
+     </mat-form-field>
     </form>
-    <button matButton (click)="subscribe(emailFormControl.value ?? '', symbol)" [disabled]="!emailFormControl.valid && symbol">Subscribe</button>
+    <button matButton (click)="subscribe(emailFormControl.value ?? '', selectedSymbol)" [disabled]="!(emailFormControl.valid && selectedSymbol)">Subscribe</button>
 </div>
 

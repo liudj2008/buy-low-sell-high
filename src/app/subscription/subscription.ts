@@ -6,16 +6,19 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
-  NgModel,
 } from '@angular/forms';
-import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
+import {ErrorStateMatcher} from '@angular/material/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { InvestingService } from '../service/investing.service';
+import { SYMBOL } from '../models';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-subscription',
-  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, FormsModule],
+  standalone: true,
+  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, FormsModule, MatOptionModule, MatSelectModule],
   templateUrl: './subscription.html',
   styleUrl: './subscription.scss'
 })
@@ -23,7 +26,8 @@ import { InvestingService } from '../service/investing.service';
 export class SubscriptionComponent {
   constructor(private _investingService: InvestingService) {}
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-  symbol: string = '';
+  stockSymbols = Object.values(SYMBOL);
+  selectedSymbol = '';
 
   matcher = new MyErrorStateMatcher();
 
