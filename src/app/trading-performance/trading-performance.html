@@ -1,0 +1,5 @@
+<p>trading-performance works!</p>
+<div *ngIf="graph">
+    <plotly-plot [data]="graph.data" [layout]="graph.layout"></plotly-plot>
+</div>
+<button (click)="click()">Click button to show more</button>
