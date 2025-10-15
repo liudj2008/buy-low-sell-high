@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_BASE_URL, SUBDOMAIN } from '../constants';
 import { Observable } from 'rxjs';
-import { buyInput, sellInput, subscribeInput } from '../models';
+import { buyInput, sellInput, subscribeInput, HistoryResponse } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,10 @@ export class InvestingService {
   subscribe(email: string, symbol: string) {
     const body: subscribeInput = { email: email, symbol: symbol };
     return this._http.post(`${API_BASE_URL}${SUBDOMAIN.SUBSCRIBE}`, body);
+  }
+
+  getHistoryPerformance(stock: string, period: string, gainThreshold: number, queueLimit: number) {
+    return this._http.get<HistoryResponse>(`${API_BASE_URL}${SUBDOMAIN.HISTORY}stock=${stock}&period=${period}&gain_threshold=${gainThreshold}&queue_limit=${queueLimit}`)
   }
 
   getStockPrice(stock: string) {

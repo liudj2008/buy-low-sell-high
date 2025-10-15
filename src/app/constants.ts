@@ -4,5 +4,6 @@ export const SUBDOMAIN = {
     SUBSCRIBE: '/subscribe',
     GET: '/?stock=',
     BUY: '/buy',
-    SELL: '/sell'
+    SELL: '/sell',
+    HISTORY: '/history?'
 }
