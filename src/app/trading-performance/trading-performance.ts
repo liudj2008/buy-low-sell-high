@@ -5,6 +5,12 @@ import { Observable } from 'rxjs';
 import { PlotlyModule } from 'angular-plotly.js';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { CommonModule } from '@angular/common';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 // Initialize Plotly globally
 (window as any).Plotly = PlotlyJS;
@@ -12,44 +18,85 @@ import { CommonModule } from '@angular/common';
 @Component({
   standalone: true,
   selector: 'app-trading-performance',
-  imports: [CommonModule, PlotlyModule],
+  imports: [
+    CommonModule,
+    PlotlyModule,
+    MatExpansionModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    FormsModule
+  ],
   templateUrl: './trading-performance.html',
-  styleUrl: './trading-performance.scss'
+  styleUrl: './trading-performance.scss',
 })
-export class TradingPerformance implements OnInit {
+export class TradingPerformance {
   tradingHistory$?: Observable<HistoryResponse> | null;
-  stock = 'AVGO'
-  period = '1y'
-  gainThreshold = 5
-  queueLimit = 4
+
   historyRecord?: PriceRecord;
   buyRecord?: PriceRecord;
   sellRecord?: PriceRecord;
   plotlyData?: PlotlyData;
 
-  graph?: any;
+  // --- Dropdown Options ---
+  stockOptions = ['AVGO', 'NVDA', 'TSLA'];
+  periodOptions = ['1mo', '3mo', '6mo', 'ytd', '1y', '3y', '5y'];
+  queueSizeOptions = [1, 2, 3, 4, 5, 'MAX'];
+  gainThresholdOptions = [1, 2, 5, 10];
 
+  // --- Selected Values ---
+  stock = 'AVGO';
+  period = '1y';
+  gainThreshold = 5;
+  queueSize = 4;
+
+  queues: any[] = [];
+  totalGain: number[] = [];
+
+  graph?: any;
+  displayedColumns = ['buyDate', 'sellDate', 'holdingDays', 'gainPct'];
 
   constructor(private _investingService: InvestingService) {}
 
-  ngOnInit(): void {
-    this.tradingHistory$ = this._investingService.getHistoryPerformance(this.stock, this.period, this.gainThreshold, this.queueLimit)
+  onChange() {
+    console.log('Selection changed:', this.stock, this.period, this.gainThreshold, this.queueSize);
   }
 
   click() {
-    this.tradingHistory$?.subscribe(
-      (response) => {
-        this.historyRecord = response.data;
-        this.buyRecord = response.buy_points;
-        this.sellRecord = response.sell_points;
+    this._investingService.getHistoryPerformance(
+      this.stock,
+      this.period,
+      this.gainThreshold,
+      this.queueSize
+    ).subscribe((response) => {
+      console.log(response.trading_queue_compound_gain);
+      console.log(response.trading_queue);
+      this.historyRecord = response.data;
+      this.buyRecord = response.buy_points;
+      this.sellRecord = response.sell_points;
+      this.totalGain = response.trading_queue_compound_gain;
 
-        this.graph = {
-    data: [
+      this.queues = response.trading_queue.map((queue, idx) => ({
+        id: idx + 1,
+        totalGain: this.totalGain[idx],
+        trades: queue.map((trade) => ({
+          buyDate: trade[0],
+          sellDate: trade[1],
+          holdingDays: trade[2],
+          gainPct: trade[3],
+        })),
+      }));
+
+      this.graph = {
+        data: [
           {
             x: this.historyRecord?.Date,
             y: this.historyRecord?.Open,
             type: 'line',
+            name: 'Stock Price',
           },
+          // Buy Points
           {
             x: this.buyRecord?.Date,
             y: this.buyRecord?.Open,
@@ -58,9 +105,11 @@ export class TradingPerformance implements OnInit {
             marker: {
               color: 'blue',
               size: 12,
-              symbol: 'arrow-bar-up'  // or 'arrow-bar-up'
-            }
+              symbol: 'arrow-up',
+            },
           },
+
+          // Sell Points
           {
             x: this.sellRecord?.Date,
             y: this.sellRecord?.Open,
@@ -69,19 +118,24 @@ export class TradingPerformance implements OnInit {
             marker: {
               color: 'red',
               size: 12,
-              symbol: 'arrow-bar-down' // Other good ones: 'triangle-up', 'arrow-up'
-            }
-          }  
+              symbol: 'arrow-down',
+            },
+          },
         ],
-    layout: {
-        title: 'Stock Price with Buy Signals',
-        showlegend: true,
-        xaxis: { title: 'Date' },
-        yaxis: { title: 'Price' }
-    }
+        layout: {
+          title: { text: 'Stock Price with Buy Signals', x: 0.5 },
+          legend: {
+            orientation: 'h',
+            yanchor: 'top',
+            y: 0.2, // move below the chart
+            xanchor: 'center',
+            x: 0.9,
+            font: { size: 12 },
+          },
+          xaxis: { title: 'Date', showgrid: true, zeroline: false },
+          yaxis: { title: 'Price', showgrid: true, zeroline: false },
+        },
+      };
+    });
   }
-      }
-    );
-  }
-
 }

@@ -1,0 +1,30 @@
+.filter-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+mat-form-field {
+  width: 150px;
+}
+
+.full-width-table {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.gain {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.loss {
+  color: #c62828;
+  font-weight: 500;
+}
+
+mat-panel-description {
+  font-size: 14px;
+  margin-left: auto;
+}
