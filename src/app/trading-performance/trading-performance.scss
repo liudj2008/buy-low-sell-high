@@ -28,3 +28,9 @@ mat-panel-description {
   font-size: 14px;
   margin-left: auto;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center;    /* Centers vertically */
+}

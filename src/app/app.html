@@ -1,4 +1,27 @@
-<router-outlet></router-outlet>
-<h1>Welcome to {{ title }} App!</h1>
-<app-trading-performance></app-trading-performance>
-<app-subscription></app-subscription>
+<header class="navbar">
+  <div class="nav-left">
+    <span class="logo">📈 BuyLowSellHigh</span>
+  </div>
+  <nav class="nav-links">
+    <a routerLink="/" routerLinkActive="active">Home</a>
+  </nav>
+</header>
+
+<main class="main-content">
+    <router-outlet></router-outlet>
+    <h1>Welcome to {{ title }} App!</h1>
+    <div>
+        <app-trading-performance></app-trading-performance>
+    </div>
+
+</main>
+
+
+<footer class="footer">
+© 2025 Peter Liu — All rights reserved. <br />
+The information provided is for educational purposes only and not intended as investment advice. 
+The author is not responsible for any financial losses incurred. <br />
+Connect on 
+<a href="https://www.linkedin.com/in/peterdjliu/" target="_blank">LinkedIn</a>.
+</footer>
+

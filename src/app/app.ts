@@ -8,7 +8,7 @@ import { TradingPerformance } from "./trading-performance/trading-performance";
   standalone: true,
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  imports: [RouterOutlet, SubscriptionComponent, TradingPerformance]
+  imports: [RouterOutlet, TradingPerformance]
 })
 export class App {
   title = 'buy-low-sell-high';
