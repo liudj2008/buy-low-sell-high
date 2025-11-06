@@ -1,91 +1,98 @@
-<div class="filter-panel">
-  <mat-form-field appearance="outline">
-    <mat-label>Stock</mat-label>
-    <mat-select [(ngModel)]="stock">
-      <mat-option *ngFor="let s of stockOptions" [value]="s">{{ s }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+<div class="trading-performance-container">
+  <div class="trading-performance-container">
+    <div class="filter-panel">
+      <mat-form-field appearance="outline">
+        <mat-label>Stock</mat-label>
+        <mat-select [(ngModel)]="stock">
+          <mat-option *ngFor="let s of stockOptions" [value]="s">{{ s }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Period</mat-label>
-    <mat-select [(ngModel)]="period">
-      <mat-option *ngFor="let p of periodOptions" [value]="p">{{ p }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Period</mat-label>
+        <mat-select [(ngModel)]="period">
+          <mat-option *ngFor="let p of periodOptions" [value]="p">{{ p }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Queue Size</mat-label>
-    <mat-select [(ngModel)]="queueSize">
-      <mat-option *ngFor="let q of queueSizeOptions" [value]="q">{{ q }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Queue Size</mat-label>
+        <mat-select [(ngModel)]="queueSize">
+          <mat-option *ngFor="let q of queueSizeOptions" [value]="q">{{ q }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Gain Threshold (%)</mat-label>
-    <mat-select [(ngModel)]="gainThreshold">
-      <mat-option *ngFor="let g of gainThresholdOptions" [value]="g">{{ g }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Gain Threshold (%)</mat-label>
+        <mat-select [(ngModel)]="gainThreshold">
+          <mat-option *ngFor="let g of gainThresholdOptions" [value]="g">{{ g }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <button matButton="filled" (click)="click()" appearance="outline"> Confirm </button>
-
-</div>
-
-
-@if (showGraphSection) {
-  @if (showGraph) {
-    <plotly-plot [data]="graph.data" [layout]="graph.layout" [useResizeHandler]="true"></plotly-plot>
-
-    <mat-accordion multi>
-      <mat-expansion-panel *ngFor="let queue of queues">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Queue {{ queue.id }} — Total Trades: {{ queue.trades.length }}
-          </mat-panel-title>
-          <mat-panel-description>
-            <span [ngClass]="{ 'gain': queue.totalGain >= 0, 'loss': queue.totalGain < 0 }">
-              Total Gain: {{ queue.totalGain | number:'1.2-2' }}%
-            </span>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <table mat-table [dataSource]="queue.trades" class="mat-elevation-z2 full-width-table">
-
-          <!-- Buy Date -->
-          <ng-container matColumnDef="buyDate">
-            <th mat-header-cell *matHeaderCellDef> Buy Date </th>
-            <td mat-cell *matCellDef="let trade"> {{ trade.buyDate }} </td>
-          </ng-container>
-
-          <!-- Sell Date -->
-          <ng-container matColumnDef="sellDate">
-            <th mat-header-cell *matHeaderCellDef> Sell Date </th>
-            <td mat-cell *matCellDef="let trade"> {{ trade.sellDate }} </td>
-          </ng-container>
-
-          <!-- Holding Days -->
-          <ng-container matColumnDef="holdingDays">
-            <th mat-header-cell *matHeaderCellDef> Days </th>
-            <td mat-cell *matCellDef="let trade"> {{ trade.holdingDays }} </td>
-          </ng-container>
-
-          <!-- Gain % -->
-          <ng-container matColumnDef="gainPct">
-            <th mat-header-cell *matHeaderCellDef> Gain (%) </th>
-            <td mat-cell *matCellDef="let trade" [ngClass]="{ 'gain': trade.gainPct >= 0, 'loss': trade.gainPct < 0 }">
-              {{ trade.gainPct | number:'1.2-2' }}%
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </mat-expansion-panel>
-    </mat-accordion>
-  } 
-  @else {
-    <div class="spinner-container">
-      <mat-spinner></mat-spinner>
+      <button matButton="filled" (click)="click()" appearance="outline">Confirm</button>
     </div>
-  }
-}
+
+    <div class="content-area">
+      @if (showGraphSection) { @if (showGraph) {
+      <plotly-plot
+        [data]="graph.data"
+        [layout]="graph.layout"
+        [useResizeHandler]="true"
+      ></plotly-plot>
+      <mat-accordion multi>
+        <mat-expansion-panel *ngFor="let queue of queues">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Queue {{ queue.id }} — Total Trades: {{ queue.trades.length }}
+            </mat-panel-title>
+            <mat-panel-description>
+              <span [ngClass]="{ gain: queue.totalGain >= 0, loss: queue.totalGain < 0 }">
+                Total Gain: {{ queue.totalGain | number : '1.2-2' }}%
+              </span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <table mat-table [dataSource]="queue.trades" class="mat-elevation-z2 full-width-table">
+            <!-- Buy Date -->
+            <ng-container matColumnDef="buyDate">
+              <th mat-header-cell *matHeaderCellDef>Buy Date</th>
+              <td mat-cell *matCellDef="let trade">{{ trade.buyDate }}</td>
+            </ng-container>
+
+            <!-- Sell Date -->
+            <ng-container matColumnDef="sellDate">
+              <th mat-header-cell *matHeaderCellDef>Sell Date</th>
+              <td mat-cell *matCellDef="let trade">{{ trade.sellDate }}</td>
+            </ng-container>
+
+            <!-- Holding Days -->
+            <ng-container matColumnDef="holdingDays">
+              <th mat-header-cell *matHeaderCellDef>Days</th>
+              <td mat-cell *matCellDef="let trade">{{ trade.holdingDays }}</td>
+            </ng-container>
+
+            <!-- Gain % -->
+            <ng-container matColumnDef="gainPct">
+              <th mat-header-cell *matHeaderCellDef>Gain (%)</th>
+              <td
+                mat-cell
+                *matCellDef="let trade"
+                [ngClass]="{ gain: trade.gainPct >= 0, loss: trade.gainPct < 0 }"
+              >
+                {{ trade.gainPct | number : '1.2-2' }}%
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </mat-expansion-panel>
+      </mat-accordion>
+      } @else {
+      <div class="spinner-container">
+        <mat-spinner></mat-spinner>
+      </div>
+      } }
+    </div>
+  </div>
+</div>

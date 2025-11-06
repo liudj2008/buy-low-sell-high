@@ -1,8 +1,26 @@
+.trading-performance-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px); /* Adjust this value based on your header/footer heights */
+  position: relative;
+}
+
 .filter-panel {
+  background: white;
+  padding: 16px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0; /* Prevents the filter panel from shrinking */
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px; /* Add some space for the scrollbar */
+  position: relative;
 }
 
 mat-form-field {
@@ -12,6 +30,8 @@ mat-form-field {
 .full-width-table {
   width: 100%;
   margin-top: 8px;
+  overflow-y: auto;
+  max-height: 200px;
 }
 
 .gain {
@@ -32,5 +52,5 @@ mat-panel-description {
 .spinner-container {
   display: flex;
   justify-content: center; /* Centers horizontally */
-  align-items: center;    /* Centers vertically */
+  align-items: center; /* Centers vertically */
 }
