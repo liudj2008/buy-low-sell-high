@@ -44,7 +44,6 @@ export class TradingPerformance {
   plotlyData?: PlotlyData;
 
   // --- Dropdown Options ---
-  stockOptions = ['FTEC', 'AIQ', 'AVGO', 'NVDA', 'VOO', 'TSLA'];
   periodOptions = ['1mo', '3mo', '6mo', 'ytd', '1y', '3y', '5y'];
   queueSizeOptions = ['1', '2', '3', '4', '5', 'MAX'];
   gainThresholdOptions = [1, 2, 5, 10];

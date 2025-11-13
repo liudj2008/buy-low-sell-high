@@ -3,9 +3,7 @@
     <div class="filter-panel">
       <mat-form-field appearance="outline">
         <mat-label>Stock</mat-label>
-        <mat-select [(ngModel)]="stock">
-          <mat-option *ngFor="let s of stockOptions" [value]="s">{{ s }}</mat-option>
-        </mat-select>
+        <input matInput [(ngModel)]="stock" placeholder="Enter stock symbol" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
