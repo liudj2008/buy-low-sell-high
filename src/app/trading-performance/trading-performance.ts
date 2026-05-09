@@ -46,7 +46,7 @@ export class TradingPerformance {
   // --- Dropdown Options ---
   periodOptions = ['1mo', '3mo', '6mo', 'ytd', '1y', '3y', '5y'];
   queueSizeOptions = ['1', '2', '3', '4', '5', 'MAX'];
-  gainThresholdOptions = [1, 2, 5, 10];
+  gainThresholdOptions = [1, 2, 5, 10, 15, 20];
 
   // --- Selected Values ---
   stock = 'AVGO';
